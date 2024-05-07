@@ -140,7 +140,7 @@ Consistent formatting in React involves adhering to a set of rules and conventio
   const user = { name: "John", age: 30 };
 
   // Avoid: Inconsistent spacing
-  const user = { name: "John", age: 30 };
+  // const user =  {   name :  "John"  ,   age:   30 };
   ```
 
 - **Line Length:** Aim to keep lines reasonably short (usually around 80-100 characters) to improve code readability. If a line is too long, consider breaking it into multiple lines.
@@ -167,8 +167,8 @@ Consistent formatting in React involves adhering to a set of rules and conventio
   const lastName = "Doe";
 
   // Avoid: Misaligned code
-  const firstName = "John";
-  const lastName = "Doe";
+  //         const    firstName =    "John";
+  // const lastName    =     "Doe";
   ```
 
 - **Using a Code Formatter:** Consider using code formatting tools like Prettier to automatically enforce consistent formatting across your codebase. These tools can be integrated into your development workflow to ensure that formatting remains consistent without manual effort.
@@ -313,7 +313,11 @@ function UserProvider({ children }) {
 function UserProfile() {
   const { user } = useContext(UserContext);
 
-  return user ? <div>Hello, {user.name}</div> : <div>Please log in</div>;
+  return user ? (
+    <div>Hello, {user.name}</div>
+  ) : (
+    <div>Please log in !!!!!!!!!!!!!!</div>
+  );
 }
 
 function App() {
@@ -491,20 +495,20 @@ Code reviews in React, as in any software development process, involve the colla
 
 ### Example
 
-```plaintext
+```jsx
 // Example of a code review comment:
 /**
-* Reviewer's comment:
-* Consider using the `map()` function here instead of a for loop for better readability and functional approach.
-*/
+ * Reviewer's comment:
+ * Consider using the `map()` function here instead of a for loop for better readability and functional approach.
+ */
 
 // Original code:
 for (let i = 0; i < items.length; i++) {
-    console.log(items[i]);
+  console.log(items[i]);
 }
 
 // Suggested improvement:
-items.map(item => console.log(item));
+items.map((item) => console.log(item));
 ```
 
 ## 13. Use Hooks for Component Lifecycle
