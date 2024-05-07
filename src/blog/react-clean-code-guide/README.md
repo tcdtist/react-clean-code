@@ -221,9 +221,54 @@ Comments are used to provide explanations, notes, or context within your code. T
 
 Use comments to explain complex logic, intent, or decisions in your code. However, strive to write self-explanatory code that requires minimal comments.
 
+### Example
+
+```jsx
+// Hook that sets the document title based on the input parameter
+function useDocumentTitle(title) {
+  useEffect(() => {
+    document.title = title; // Set the webpage title
+  }, [title]);
+}
+
+// This component displays a user profile and expects a `user` object prop
+function UserProfile({ user }) {
+  useDocumentTitle(user.name); // Use custom hook to change document title
+
+  return (
+    <div className="user-profile">
+      <h1>{user.name}</h1> {/* Display user name */}
+      <p>{user.bio}</p> {/* Display user biography */}
+    </div>
+  );
+}
+```
+
 ## 8. Reuse and Modularization
 
 Reuse code by creating reusable components and utility functions. This reduces code duplication and makes your codebase more maintainable.
+
+### Example
+
+```jsx
+// Reusable Button component
+function Button({ onClick, children }) {
+  return (
+    <button onClick={onClick} className="custom-button">
+      {children}
+    </button>
+  );
+}
+
+// Usage in other parts of the application
+function App() {
+  return (
+    <div>
+      <Button onClick={() => console.log("Clicked!")}>Click Me!</Button>
+    </div>
+  );
+}
+```
 
 ## 9. State Management
 
@@ -244,6 +289,41 @@ State management in React refers to the process of managing and controlling the 
 6. **Apollo Client:** If your application works with GraphQL APIs, Apollo Client offers a powerful solution for managing data, queries, and mutations. It provides tools for caching, data normalization, and subscription support.
 
 Choose a state management solution based on the complexity of your application and the specific requirements of your project. Regardless of the solution, the primary goals of state management are to keep your application’s data consistent, maintainable, and accessible to the components that need it while minimizing unnecessary re-renders.
+
+### Example
+
+```jsx
+// Using Context API to manage and share user data across components
+const UserContext = createContext();
+
+function UserProvider({ children }) {
+  const [user, setUser] = useState(null);
+
+  const login = (username) => {
+    setUser({ name: username });
+  };
+
+  return (
+    <UserContext.Provider value={{ user, login }}>
+      {children}
+    </UserContext.Provider>
+  );
+}
+
+function UserProfile() {
+  const { user } = useContext(UserContext);
+
+  return user ? <div>Hello, {user.name}</div> : <div>Please log in</div>;
+}
+
+function App() {
+  return (
+    <UserProvider>
+      <UserProfile />
+    </UserProvider>
+  );
+}
+```
 
 ## 10. Error Handling
 
@@ -408,6 +488,92 @@ Code reviews in React, as in any software development process, involve the colla
 - **Consistency:** Code reviews enforce coding standards, naming conventions, and design patterns, leading to consistent and coherent code across the project.
 
 - **Refinement:** Code reviews provide an opportunity to suggest improvements, optimizations, and more elegant solutions.
+
+### Example
+
+```plaintext
+// Example of a code review comment:
+/**
+* Reviewer's comment:
+* Consider using the `map()` function here instead of a for loop for better readability and functional approach.
+*/
+
+// Original code:
+for (let i = 0; i < items.length; i++) {
+    console.log(items[i]);
+}
+
+// Suggested improvement:
+items.map(item => console.log(item));
+```
+
+## 13. Use Hooks for Component Lifecycle
+
+React Hooks simplify lifecycle management in functional components. Use `useEffect` for side effects and `useState` for state management.
+
+### Example
+
+```jsx
+import React, { useState, useEffect } from "react";
+
+function TimerComponent() {
+  const [time, setTime] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime((prevTime) => prevTime + 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  return <div>Timer: {time} seconds</div>;
+}
+```
+
+## 14. Lazy Loading Components
+
+Improve your application's performance by lazy loading components that are not immediately needed.
+
+### Example
+
+```jsx
+import React, { Suspense, lazy } from "react";
+
+const LazyLoadedComponent = lazy(() => import("./LazyComponent"));
+
+function App() {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <LazyLoadedComponent />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+## 15. Custom Hooks
+
+Create custom hooks to share logic across components. This keeps your components clean and DRY.
+
+### Example
+
+```jsx
+import { useState, useEffect } from "react";
+
+function useDocumentTitle(title) {
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+}
+
+export default function Component() {
+  useDocumentTitle("Page Title");
+
+  return <h1>Hello, World!</h1>;
+}
+```
 
 ## Conclusion
 
